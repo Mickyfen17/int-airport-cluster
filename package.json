@@ -1,7 +1,6 @@
 {
   "name": "webpack-react",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "precommit": "lint-staged",
@@ -18,6 +17,8 @@
   "author": "Mike Fenwick",
   "license": "ISC",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "mapbox-gl": "^0.45.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
   },
@@ -54,5 +55,15 @@
     "webpack-cli": "^2.1.2",
     "webpack-dev-server": "^3.1.4",
     "webpack-merge": "^4.1.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mickyfen17/int-airport-cluster"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/Mickyfen17/int-airport-cluster/issues"
+  },
+  "homepage": "https://github.com/Mickyfen17/int-airport-cluster#readme",
+  "description": ""
 }
