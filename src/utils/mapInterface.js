@@ -9,7 +9,7 @@ const mapInterface = {
     mapboxgl.accessToken = process.env.MAPBOX_KEY;
     this.renderedMap = new mapboxgl.Map({
       container: mapContainer,
-      style: 'mapbox://styles/mike-fenwick/cji81a2a05t2e2rmrvnzez40x', // custon map to inc 3d buildings at zoom 15+
+      style: 'mapbox://styles/mike-fenwick/cji81a2a05t2e2rmrvnzez40x', // custom map to inc 3d buildings at zoom 15 & above
     });
     this.addMapControls();
 
@@ -78,7 +78,7 @@ const mapInterface = {
       const {
         properties: { name, abbrev, wikipedia },
       } = cluster;
-      new mapboxgl.Popup()
+      new mapboxgl.Popup({ offset: [2, -12] })
         .setLngLat(coords)
         .setHTML(
           `
@@ -117,6 +117,7 @@ const mapInterface = {
       this.toolTip = new mapboxgl.Popup({
         closeButton: false,
         closeOnClick: false,
+        offset: [2, -12],
       })
         .setLngLat(coords)
         .setHTML(`<p>${name} Airport</p>`)
@@ -162,7 +163,7 @@ const mapInterface = {
       data: featureCollection,
       cluster: true,
       clusterMaxZoom: 15,
-      clusterRadius: 75,
+      clusterRadius: 55,
     });
 
     // load images from Cloudinary and add to map
@@ -197,20 +198,32 @@ const mapInterface = {
           ['get', 'point_count'],
           0.2,
           25,
-          0.4,
+          0.3,
           50,
-          0.6,
+          0.5,
           100,
-          0.8,
+          0.7,
           250,
-          1,
+          0.9,
         ],
         'icon-allow-overlap': true,
         'text-field': '{point_count}',
         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
         'text-size': 14,
         'text-anchor': 'top',
-        'text-offset': [0.3, 0.5],
+        'text-offset': [
+          'step',
+          ['get', 'point_count'],
+          ['literal', [0.1, 0.7]],
+          25,
+          ['literal', [0.2, -0.8]],
+          50,
+          ['literal', [0.4, -1]],
+          100,
+          ['literal', [0.5, -1.2]],
+          250,
+          ['literal', [0.6, -1.2]],
+        ],
       },
       paint: {
         'text-color': '#000',
@@ -225,7 +238,7 @@ const mapInterface = {
       // default size 0.15 blue plane marker
       layout: {
         'icon-image': 'plane-blue',
-        'icon-size': 0.15,
+        'icon-size': 0.125,
       },
     });
   },
