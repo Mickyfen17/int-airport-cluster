@@ -13,9 +13,9 @@ const mapInterface = {
     });
     this.addMapControls();
 
-    const FeatureCollection = await apiCalls.airportsGeoJson();
+    const featureCollection = await apiCalls.airportsGeoJson();
     // handle the cluster of the geoJSON feature
-    this.renderedMap.on('load', this.clusterMarkers(FeatureCollection));
+    this.renderedMap.on('load', this.clusterMarkers(featureCollection));
     // add click events for cluster points
     this.addClusterClickEvent();
     // toggle mouse cursor to pointer on hover of cluster.
@@ -140,10 +140,10 @@ const mapInterface = {
     });
   },
 
-  clusterMarkers(FeatureCollection) {
+  clusterMarkers(featureCollection) {
     this.renderedMap.addSource('airports', {
       type: 'geojson',
-      data: FeatureCollection,
+      data: featureCollection,
       cluster: true,
       clusterMaxZoom: 15,
       clusterRadius: 75,
