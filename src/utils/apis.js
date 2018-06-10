@@ -18,16 +18,14 @@ const apiCalls = {
       'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-drkblue.png',
       'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-blue.png',
     ];
-    return images.forEach((imgUrl, i) => {
+    return images.forEach(imgUrl => {
       mapInterface.renderedMap.loadImage(imgUrl, (error, image) => {
         if (error) throw new Error(error);
-        const imageUrl = images[i];
-        const imageColor = imageUrl.substring(
-          imageUrl.lastIndexOf('-') + 1,
-          imageUrl.lastIndexOf('.')
+        const imageColor = imgUrl.substring(
+          imgUrl.lastIndexOf('-') + 1,
+          imgUrl.lastIndexOf('.')
         );
         mapInterface.renderedMap.addImage(`plane-${imageColor}`, image);
-        return image;
       });
     });
   },
