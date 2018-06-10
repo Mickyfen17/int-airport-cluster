@@ -22,6 +22,8 @@ const mapInterface = {
     this.addMouseMoveCursorEvent();
     // add hover event to show toolTip popup for single cluster
     this.addSingleClusterHover();
+    // adds zoom event to handle map pitch & bearing on zoom > & < 15
+    this.addMapZoomEvent();
   },
 
   addMapControls() {
@@ -70,9 +72,7 @@ const mapInterface = {
     this.renderedMap.flyTo({
       center: coords,
       speed: 0.8,
-      zoom: 15,
-      pitch: 45,
-      bearing: -17,
+      zoom: 15.5,
     });
     this.renderedMap.once('moveend', () => {
       const {
@@ -137,6 +137,22 @@ const mapInterface = {
       this.renderedMap.getCanvas().style.cursor = cluster.length
         ? 'pointer'
         : '';
+    });
+  },
+
+  addMapZoomEvent() {
+    this.renderedMap.on('zoom', () => {
+      if (this.renderedMap.getZoom() >= 15) {
+        this.renderedMap.easeTo({
+          pitch: 45,
+          bearing: -10,
+        });
+      } else if (this.renderedMap.getPitch() && this.renderedMap.getBearing()) {
+        this.renderedMap.easeTo({
+          pitch: 0,
+          bearing: 0,
+        });
+      }
     });
   },
 
