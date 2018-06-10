@@ -9,8 +9,7 @@ const mapInterface = {
     mapboxgl.accessToken = process.env.MAPBOX_KEY;
     this.renderedMap = new mapboxgl.Map({
       container: mapContainer,
-      style: 'mapbox://styles/mapbox/light-v9',
-      zoom: 1.5,
+      style: 'mapbox://styles/mike-fenwick/cji81a2a05t2e2rmrvnzez40x', // custon map to inc 3d buildings at zoom 15+
     });
     this.addMapControls();
 
@@ -68,7 +67,13 @@ const mapInterface = {
   },
 
   handleSingleClusterClick(coords, cluster) {
-    this.renderedMap.flyTo({ center: coords, speed: 0.8, zoom: 14 });
+    this.renderedMap.flyTo({
+      center: coords,
+      speed: 0.8,
+      zoom: 15,
+      pitch: 45,
+      bearing: -17,
+    });
     this.renderedMap.once('moveend', () => {
       const {
         properties: { name, abbrev, wikipedia },
@@ -144,61 +149,69 @@ const mapInterface = {
       clusterRadius: 75,
     });
 
-    this.renderedMap.loadImage(
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Airplane_silhouette.svg/100px-Airplane_silhouette.svg.png',
-      (error, image) => {
-        if (error) throw new Error(error);
-        this.renderedMap.addImage('plane', image);
-        this.renderedMap.addLayer({
-          id: 'clusters',
-          type: 'symbol',
-          source: 'airports',
-          filter: ['has', 'point_count'],
-          //   * 0.4 airport marker size when point count is less than 25 clusters
-          //   * 0.6 airport marker size when point count is between 50 & 25 clusters
-          //   * 0.8 airport marker size when point count is between 100 & 50 clusters
-          //   * 1 airport marker size when point count is between 250 & 100 clusters
-          //   * 1.25 airport marker size when point count is greater than 250 clusters
-          layout: {
-            'icon-image': 'plane',
-            'icon-size': [
-              'step',
-              ['get', 'point_count'],
-              0.4,
-              25,
-              0.6,
-              50,
-              0.8,
-              100,
-              1,
-              250,
-              1.25,
-            ],
-            'icon-allow-overlap': true,
-            'text-field': '{point_count}',
-            'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-            'text-size': 14,
-            'text-anchor': 'top',
-            'text-offset': [0.3, 0.5],
-          },
-          paint: {
-            'text-color': '#000',
-          },
-        });
+    // load images from Cloudinary and add to map
+    apiCalls.loadImages();
 
-        this.renderedMap.addLayer({
-          id: 'unclustered-point',
-          type: 'symbol',
-          source: 'airports',
-          filter: ['!has', 'point_count'],
-          // default size of single airport marker 0.25
-          layout: {
-            'icon-image': 'plane',
-            'icon-size': 0.25,
-          },
-        });
-      }
-    );
+    this.renderedMap.addLayer({
+      id: 'clusters',
+      type: 'symbol',
+      source: 'airports',
+      filter: ['has', 'point_count'],
+      //   * 0.2 dark blue airport marker size when point count is less than 25 clusters
+      //   * 0.4 grey airport marker size when point count is between 50 & 25 clusters
+      //   * 0.6 desery yellow airport marker size when point count is between 100 & 50 clusters
+      //   * 0.8 grass green airport marker size when point count is between 250 & 100 clusters
+      //   * 1 forest green airport marker size when point count is greater than 250 clusters
+      layout: {
+        'icon-image': [
+          'step',
+          ['get', 'point_count'],
+          'plane-drkblue',
+          25,
+          'plane-grey',
+          50,
+          'plane-desert',
+          100,
+          'plane-grassgrn',
+          250,
+          'plane-forestgrn',
+        ],
+        'icon-size': [
+          'step',
+          ['get', 'point_count'],
+          0.2,
+          25,
+          0.4,
+          50,
+          0.6,
+          100,
+          0.8,
+          250,
+          1,
+        ],
+        'icon-allow-overlap': true,
+        'text-field': '{point_count}',
+        'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
+        'text-size': 14,
+        'text-anchor': 'top',
+        'text-offset': [0.3, 0.5],
+      },
+      paint: {
+        'text-color': '#000',
+      },
+    });
+
+    this.renderedMap.addLayer({
+      id: 'unclustered-point',
+      type: 'symbol',
+      source: 'airports',
+      filter: ['!has', 'point_count'],
+      // default size 0.15 blue plane marker
+      layout: {
+        'icon-image': 'plane-blue',
+        'icon-size': 0.15,
+      },
+    });
   },
 };
 
