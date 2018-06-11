@@ -6,7 +6,8 @@
     "precommit": "lint-staged",
     "pretty": "prettier --print-width 80 --single-quote --trailing-comma es5 --write \"src/**/*.js\"",
     "start": "webpack-dev-server --mode development --open --hot --config webpack.dev.js",
-    "build": "webpack --mode production --config webpack.prod.js"
+    "build": "webpack --mode production --config webpack.prod.js",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "lint-staged": {
     "*.js": [
@@ -17,7 +18,6 @@
   "author": "Mike Fenwick",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.26.0",
     "mapbox-gl": "^0.45.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2"
@@ -27,6 +27,7 @@
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
@@ -42,6 +43,7 @@
     "eslint-plugin-react": "^7.7.0",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
+    "gh-pages": "^1.2.0",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^0.14.3",
     "lint-staged": "^7.0.5",
@@ -64,6 +66,6 @@
   "bugs": {
     "url": "https://github.com/Mickyfen17/int-airport-cluster/issues"
   },
-  "homepage": "https://github.com/Mickyfen17/int-airport-cluster#readme",
+  "homepage": "https://mickyfen17.github.io/int-airport-cluster",
   "description": ""
 }
