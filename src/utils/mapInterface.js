@@ -1,29 +1,36 @@
-import mapboxgl from 'mapbox-gl';
 import apiCalls from './apis';
+
+let mapboxgl;
 
 const mapInterface = {
   renderedMap: null,
   toolTip: null,
 
-  async mapInit(mapContainer) {
-    mapboxgl.accessToken = process.env.MAPBOX_KEY;
-    this.renderedMap = new mapboxgl.Map({
-      container: mapContainer,
-      style: 'mapbox://styles/mike-fenwick/cji81a2a05t2e2rmrvnzez40x', // custom map to inc 3d buildings at zoom 15 & above
-    });
-    this.addMapControls();
+  mapInit(mapContainer) {
+    return import(/* webpackChunkName: "mapbox-gl" */ 'mapbox-gl')
+      .then(async mapboxGL => {
+        mapboxgl = mapboxGL.default;
 
-    const featureCollection = await apiCalls.airportsGeoJson();
-    // handle the cluster of the geoJSON feature
-    this.renderedMap.on('load', this.clusterMarkers(featureCollection));
-    // add click events for cluster points
-    this.addClusterClickEvent();
-    // toggle mouse cursor to pointer on hover of cluster.
-    this.addMouseMoveCursorEvent();
-    // add hover event to show toolTip popup for single cluster
-    this.addSingleClusterHover();
-    // adds zoom event to handle map pitch & bearing on zoom > & < 15
-    this.addMapZoomEvent();
+        mapboxgl.accessToken = process.env.MAPBOX_KEY;
+        this.renderedMap = new mapboxgl.Map({
+          container: mapContainer,
+          style: 'mapbox://styles/mike-fenwick/cji81a2a05t2e2rmrvnzez40x', // custom map to inc 3d buildings at zoom 15 & above
+        });
+        this.addMapControls();
+
+        const featureCollection = await apiCalls.airportsGeoJson();
+        // handle the cluster of the geoJSON feature
+        this.renderedMap.on('load', this.clusterMarkers(featureCollection));
+        // add click events for cluster points
+        this.addClusterClickEvent();
+        // toggle mouse cursor to pointer on hover of cluster.
+        this.addMouseMoveCursorEvent();
+        // add hover event to show toolTip popup for single cluster
+        this.addSingleClusterHover();
+        // adds zoom event to handle map pitch & bearing on zoom > & < 15
+        this.addMapZoomEvent();
+      })
+      .catch(err => console.log(err, 'An error occurred while loading module'));
   },
 
   addMapControls() {
