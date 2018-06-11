@@ -11,12 +11,12 @@ const apiCalls = {
 
   loadImages() {
     const images = [
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-forestgrn.png',
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528569332/Images/airplane-shape-green1.png',
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528569495/Images/airplane-shape-green2.png',
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green3.png',
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green4.png',
-      'http://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green5.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-forestgrn.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528569332/Images/airplane-shape-green1.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528569495/Images/airplane-shape-green2.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green3.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green4.png',
+      'https://res.cloudinary.com/mickyfen17/image/upload/v1528564190/Images/airplane-shape-green5.png',
     ];
     return images.forEach(imgUrl => {
       mapInterface.renderedMap.loadImage(imgUrl, (error, image) => {
