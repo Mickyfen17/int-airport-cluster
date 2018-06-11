@@ -174,22 +174,22 @@ const mapInterface = {
       type: 'symbol',
       source: 'airports',
       filter: ['has', 'point_count'],
-      //   * 0.2 dark blue airport marker size when point count is less than 25 clusters
-      //   * 0.4 grey airport marker size when point count is between 50 & 25 clusters
-      //   * 0.6 desery yellow airport marker size when point count is between 100 & 50 clusters
-      //   * 0.8 grass green airport marker size when point count is between 250 & 100 clusters
+      //   * 0.2 green2 airport marker size when point count is less than 25 clusters
+      //   * 0.4 green3 airport marker size when point count is between 50 & 25 clusters
+      //   * 0.6 green4 airport marker size when point count is between 100 & 50 clusters
+      //   * 0.8 green5 airport marker size when point count is between 250 & 100 clusters
       //   * 1 forest green airport marker size when point count is greater than 250 clusters
       layout: {
         'icon-image': [
           'step',
           ['get', 'point_count'],
-          'plane-drkblue',
+          'plane-green2',
           25,
-          'plane-grey',
+          'plane-green3',
           50,
-          'plane-desert',
+          'plane-green4',
           100,
-          'plane-grassgrn',
+          'plane-green5',
           250,
           'plane-forestgrn',
         ],
@@ -209,14 +209,14 @@ const mapInterface = {
         'icon-allow-overlap': true,
         'text-field': '{point_count}',
         'text-font': ['Open Sans Bold', 'Arial Unicode MS Bold'],
-        'text-size': 14,
+        'text-size': ['step', ['get', 'point_count'], 10, 50, 14], // font size 10px from 0 - 49 clusters & 14px 50+ clusters
         'text-anchor': 'top',
         'text-offset': [
           'step',
           ['get', 'point_count'],
-          ['literal', [0.1, 0.7]],
+          ['literal', [0.1, 1]],
           25,
-          ['literal', [0.2, -0.8]],
+          ['literal', [0.3, -0.9]],
           50,
           ['literal', [0.4, -1]],
           100,
@@ -226,7 +226,7 @@ const mapInterface = {
         ],
       },
       paint: {
-        'text-color': '#000',
+        'text-color': ['step', ['get', 'point_count'], '#000', 25, '#FFF'], // text color black upto 25 cluster marker & white above
       },
     });
 
@@ -235,9 +235,9 @@ const mapInterface = {
       type: 'symbol',
       source: 'airports',
       filter: ['!has', 'point_count'],
-      // default size 0.15 blue plane marker
+      // default size 0.125 green1 plane marker
       layout: {
-        'icon-image': 'plane-blue',
+        'icon-image': 'plane-green1',
         'icon-size': 0.125,
       },
     });
