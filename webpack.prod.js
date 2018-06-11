@@ -16,6 +16,7 @@ module.exports = merge(common, {
         }),
       },
     ],
+    noParse: /(mapbox-gl)\.js$/, // https://github.com/mapbox/mapbox-gl-js/issues/4359
   },
   plugins: [
     new CleanWebpackPlugin('dist', {}),
